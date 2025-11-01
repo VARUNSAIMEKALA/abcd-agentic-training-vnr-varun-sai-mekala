@@ -1,0 +1,637 @@
+{
+  "name": "correct one",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "=whatsapp",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -816,
+        -464
+      ],
+      "id": "24b37f59-c544-4d13-8f4a-3ffcd98e6c1f",
+      "name": "Webhook",
+      "webhookId": "4985a6aa-26d8-4239-b67d-134147bd5afc"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.number,\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": $json.message\n  }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -128,
+        -608
+      ],
+      "id": "560223ad-2194-4757-bb3a-461647cba179",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "U4bVpErP5IJUpZNr",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck",
+          "mode": "list",
+          "cachedResultName": "CodeBuddyAI_Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "NAME": "={{ $json.name }}",
+            "TIMESTAMP": "={{ new Date().toLocaleString(\"en-IN\") }}",
+            "NUMBER": "=+{{ $json.number }}",
+            "MESSAGE": "={{ $json.message }}",
+            "TOPIC": "={{ $json.topic }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TIMESTAMP",
+              "displayName": "TIMESTAMP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "NUMBER",
+              "displayName": "NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "MESSAGE",
+              "displayName": "MESSAGE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "TOPIC",
+              "displayName": "TOPIC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -144,
+        -368
+      ],
+      "id": "e3096a95-4ce9-436f-a3b0-b482510d6427",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1HETKyxKXLvf00F0",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "89cafbef-a717-4ebe-972b-fb14016caded",
+              "leftValue": "={{$json[\"body\"][\"entry\"][0][\"changes\"][0][\"value\"][\"messages\"][0][\"text\"][\"body\"].toLowerCase()}}",
+              "rightValue": "hello",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            },
+            {
+              "id": "0e6ccdc8-7132-4f22-846c-82cc49e9c692",
+              "leftValue": "={{$json[\"body\"][\"entry\"][0][\"changes\"][0][\"value\"][\"messages\"][0][\"text\"][\"body\"].toLowerCase()}}",
+              "rightValue": "hi",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        -464
+      ],
+      "id": "acfbe738-9a21-4d84-a10e-a520d286026c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Detect where the data is stored (some webhooks put it under body)\nconst rawData = $json.body ? $json.body : $json;\n\n// WhatsApp webhook structure\nconst entry = rawData.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value || {};\nconst contact = value.contacts?.[0];\nconst message = value.messages?.[0];\n\nconst number = contact?.wa_id || message?.from || \"Unknown\";\n\n// Ensure message text is a string\nconst text = \"Hi Buddy👋\\nI'm your CodeBuddyAI\\nSpecify your topic for today's questions in this format <topic: something>\"\n\n// Output clean JSON\nreturn {\n  number,\n  message: text,\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -608
+      ],
+      "id": "73b3037f-00d9-435c-b77f-3353eed4d1b2",
+      "name": "Code in JavaScript1"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyD_UDX2bXx6jLodyFAdTNJS9mTd_9hDeNM"
+            },
+            {
+              "name": "cx",
+              "value": "d7b2b226b4a4f4409"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.TOPIC }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        -368
+      ],
+      "id": "7b9c067d-52ad-415e-97b7-5f7b2a99af56",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Take top 3 links/snippets for the AI agent\nconst items = $json.items?.slice(0, 3) || [];\n\nlet combinedText = \"Here are some useful pages about the topic:\\n\\n\";\n\nfor (const item of items) {\n  combinedText += `• ${item.title}\\n${item.link}\\n${item.snippet}\\n\\n`;\n}\n\n// Pass text to AI agent\nreturn {\n  topic: $json.q || \"Unknown topic\",\n  content: combinedText\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -368
+      ],
+      "id": "6ef1dfa9-fa97-473b-b369-a2c603ac45ac",
+      "name": "Code in JavaScript2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        448,
+        -176
+      ],
+      "id": "eff992ba-79f4-4d00-b9a7-a3c12cf5f5cf",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QPu0dh6YD3i2aed5",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \"messaging_product\": \"whatsapp\", \"to\": $node[\"Topic Finder\"].json[\"number\"], \"type\": \"text\", \"text\": { \"body\": $node[\"Question Generator\"].json[\"output\"] } }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        896,
+        -560
+      ],
+      "id": "a026669f-eb9d-4564-be52-b76df746ad3f",
+      "name": "HTTP Request2",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "U4bVpErP5IJUpZNr",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are CodeBuddy.AI — an AI tutor that creates high-quality coding questions.\n\nBased on the topic and related information below, generate **3 programming questions**.  \nEach question should:\n- Be related to the given topic.\n- Be clear and at medium difficulty.\n- Include small code or logic hints if possible.\n\nTopic: {{$json.topic}}\n\nReference content:\n{{$json.content}}\n\nNow give me exactly 3 questions, numbered 1 to 3.\nGive the question very shortly, like a small quiz question.\nRUN ONLY ONCE.\nDon't repeat the questions.\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        -368
+      ],
+      "id": "74048a90-d1ba-4bcb-bda0-4b4206507c8d",
+      "name": "Question Generator"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Detect where the data is stored (some webhooks put it under body)\nconst rawData = $json.body ? $json.body : $json;\n\n// WhatsApp webhook structure\nconst entry = rawData.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value || {};\nconst contact = value.contacts?.[0];\nconst message = value.messages?.[0];\n\n// Extract basic info\nconst name = contact?.profile?.name || \"Unknown\";\nconst number = contact?.wa_id || message?.from || \"Unknown\";\n\n// Ensure message text is a string\nconst text = String(message?.text?.body || \"\").trim();\n\n// 🧠 Extract topic from message like \"topic:- something\" or \"topic: something\"\nlet topic = \"Not specified\";\nconst topicMatch = text.toLowerCase().match(/topic[:-]\\s*(.*)/i);\nif (topicMatch && topicMatch[1]) {\n  topic = topicMatch[1].trim();\n}\n\n// Output clean JSON\nreturn {\n  name,\n  number,\n  message: text,\n  message_type: message?.type || \"text\",\n  timestamp: message?.timestamp || null,\n  topic\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -368
+      ],
+      "id": "0f7066b8-4d54-42bc-a238-2cb2b5128c1b",
+      "name": "Topic Finder"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the text output from the Question Generator\nconst text = $input.first().json.output;\n\n// Use regex to extract questions that start with 1., 2., 3.\nconst matches = text.match(/\\d+\\.\\s+([\\s\\S]*?)(?=\\n\\d+\\.|$)/g);\n\n// Clean and assign to separate fields\nlet question1 = \"\";\nlet question2 = \"\";\nlet question3 = \"\";\n\nif (matches && matches.length > 0) {\n  question1 = matches[0].replace(/^\\d+\\.\\s+/, \"\").trim();\n  question2 = matches[1] ? matches[1].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n  question3 = matches[2] ? matches[2].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n}\n\n// Output as JSON for Google Sheets\nreturn [\n  {\n    json: {\n      Question1: question1,\n      Question2: question2,\n      Question3: question3\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        -336
+      ],
+      "id": "1d8f1623-149e-493d-be7b-c9bac2fce510",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck",
+          "mode": "list",
+          "cachedResultName": "CodeBuddyAI_Responses",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/12KgKWv3sqZUdN4f7-EmH8p8QuclLnmAfgKprHg0CVck/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "QUESTION 1": "={{ $json.Question1 }}",
+            "QUESTION 2": "={{ $json.Question2 }}",
+            "QUESTION 3": "={{ $json.Question3 }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TIMESTAMP",
+              "displayName": "TIMESTAMP",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "NAME",
+              "displayName": "NAME",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "NUMBER",
+              "displayName": "NUMBER",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MESSAGE",
+              "displayName": "MESSAGE",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TOPIC",
+              "displayName": "TOPIC",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "QUESTION 1",
+              "displayName": "QUESTION 1",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "QUESTION 2",
+              "displayName": "QUESTION 2",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "QUESTION 3",
+              "displayName": "QUESTION 3",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1184,
+        -336
+      ],
+      "id": "b511e314-4f00-4a6a-9dba-a631fc10ad84",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "1HETKyxKXLvf00F0",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Topic Finder",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript2": {
+      "main": [
+        [
+          {
+            "node": "Question Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Question Generator",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Question Generator": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Topic Finder": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a66142f4-7eee-4dff-97a6-ab584f0671b4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2750bd095c76ca707ab18038609b2c474deff2baec9d97e4fefe2262cacc91d2"
+  },
+  "id": "mGeGUmHW8Q8SRURJ",
+  "tags": []
+}
