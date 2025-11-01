@@ -71,10 +71,18 @@ Before importing this workflow, make sure you have:
     "Question2": "...",
     "Question3": "..."
   }
+  ```
 
+### 📊 9. Update Row in Google Sheet
+- **Action:** Adds the generated questions into the same user’s row.
 
+### 💬 10. HTTP Request — Send Back to WhatsApp
+- **Function:** Sends generated questions to the user’s WhatsApp number using Cloud API.
 
-### 🪄 How It Works (Flow Summary)
+---
+
+## 🪄 How It Works (Flow Summary)
+
 ```
 User Message (WhatsApp)
         ↓
@@ -97,3 +105,69 @@ Send Greeting     Extract Topic → Log to Sheets
                    Update Google Sheets
 ```
 
+---
+
+## 🔑 Environment Variables (Recommended)
+
+| Variable | Description |
+|-----------|-------------|
+| `WHATSAPP_TOKEN` | Meta WhatsApp API access token |
+| `GOOGLE_API_KEY` | Google Custom Search API key |
+| `GEMINI_API_KEY` | Gemini AI key |
+| `SHEET_ID` | Google Sheet ID where data is stored |
+
+Replace hardcoded values in HTTP and Google Sheets nodes with these variables for secure configuration.
+
+---
+
+## 🚀 Setup Steps
+
+### 1. Import Workflow
+In n8n, click **Import from File** and select `correct one (1).json`.
+
+### 2. Configure Credentials
+Add credentials for:
+- **HTTP Header Auth** (WhatsApp API)
+- **Google Sheets OAuth2**
+- **Google Gemini / PaLM API**
+
+### 3. Deploy Webhook
+Copy the webhook URL from n8n and paste it into your **Meta Developer App** under:
+> WhatsApp → Configuration → Webhook → Callback URL
+
+### 4. Test the Flow
+Send a WhatsApp message:  
+`topic: arrays`  
+You’ll receive 3 coding questions related to arrays.
+
+---
+
+## 📂 Google Sheet Example
+
+| TIMESTAMP | NAME | NUMBER | MESSAGE | TOPIC | QUESTION 1 | QUESTION 2 | QUESTION 3 |
+|------------|------|---------|----------|--------|-------------|-------------|-------------|
+| 2025-11-01 | Varun | 91XXXXXXXXXX | topic: arrays | arrays | What is an array? | How do you reverse an array in Java? | Difference between array and ArrayList? |
+
+---
+
+## 📸 Optional Enhancements
+
+- Add a reminder workflow to send unanswered questions after 24h.
+- Integrate **OpenAI / Gemini Flash** for better question generation.
+- Add a **daily scheduler** to automatically send questions at a fixed time.
+
+---
+
+## 🧑‍💻 Author
+
+**Varun Sai Mekala**  
+Creator of *CodeBuddy.AI* — a smart WhatsApp-based programming tutor powered by n8n & Gemini AI.
+
+---
+
+## 🪪 License
+
+This workflow is open-source and free to use for educational purposes.  
+Feel free to fork, modify, and enhance.
+
+---
