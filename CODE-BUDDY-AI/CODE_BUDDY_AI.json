@@ -1,5 +1,5 @@
 {
-  "name": "correct one",
+  "name": "CODE_BUDDY_AI",
   "nodes": [
     {
       "parameters": {
@@ -16,45 +16,6 @@
       "id": "24b37f59-c544-4d13-8f4a-3ffcd98e6c1f",
       "name": "Webhook",
       "webhookId": "4985a6aa-26d8-4239-b67d-134147bd5afc"
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ {\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.number,\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": $json.message\n  }\n} }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        -128,
-        -608
-      ],
-      "id": "560223ad-2194-4757-bb3a-461647cba179",
-      "name": "HTTP Request",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "U4bVpErP5IJUpZNr",
-          "name": "Header Auth account"
-        }
-      }
     },
     {
       "parameters": {
@@ -200,65 +161,6 @@
     },
     {
       "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "// Detect where the data is stored (some webhooks put it under body)\nconst rawData = $json.body ? $json.body : $json;\n\n// WhatsApp webhook structure\nconst entry = rawData.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value || {};\nconst contact = value.contacts?.[0];\nconst message = value.messages?.[0];\n\nconst number = contact?.wa_id || message?.from || \"Unknown\";\n\n// Ensure message text is a string\nconst text = \"Hi Buddy👋\\nI'm your CodeBuddyAI\\nSpecify your topic for today's questions in this format <topic: something>\"\n\n// Output clean JSON\nreturn {\n  number,\n  message: text,\n};\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -368,
-        -608
-      ],
-      "id": "73b3037f-00d9-435c-b77f-3353eed4d1b2",
-      "name": "Code in JavaScript1"
-    },
-    {
-      "parameters": {
-        "url": "=https://www.googleapis.com/customsearch/v1",
-        "sendQuery": true,
-        "queryParameters": {
-          "parameters": [
-            {
-              "name": "key",
-              "value": "AIzaSyD_UDX2bXx6jLodyFAdTNJS9mTd_9hDeNM"
-            },
-            {
-              "name": "cx",
-              "value": "d7b2b226b4a4f4409"
-            },
-            {
-              "name": "q",
-              "value": "={{ $json.TOPIC }}"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        64,
-        -368
-      ],
-      "id": "7b9c067d-52ad-415e-97b7-5f7b2a99af56",
-      "name": "HTTP Request1"
-    },
-    {
-      "parameters": {
-        "mode": "runOnceForEachItem",
-        "jsCode": "// Take top 3 links/snippets for the AI agent\nconst items = $json.items?.slice(0, 3) || [];\n\nlet combinedText = \"Here are some useful pages about the topic:\\n\\n\";\n\nfor (const item of items) {\n  combinedText += `• ${item.title}\\n${item.link}\\n${item.snippet}\\n\\n`;\n}\n\n// Pass text to AI agent\nreturn {\n  topic: $json.q || \"Unknown topic\",\n  content: combinedText\n};\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        272,
-        -368
-      ],
-      "id": "6ef1dfa9-fa97-473b-b369-a2c603ac45ac",
-      "name": "Code in JavaScript2"
-    },
-    {
-      "parameters": {
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
@@ -273,45 +175,6 @@
         "googlePalmApi": {
           "id": "QPu0dh6YD3i2aed5",
           "name": "Google Gemini(PaLM) Api account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "method": "POST",
-        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendHeaders": true,
-        "headerParameters": {
-          "parameters": [
-            {
-              "name": "Authorization",
-              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
-            },
-            {
-              "name": "Content-Type",
-              "value": "application/json"
-            }
-          ]
-        },
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ \"messaging_product\": \"whatsapp\", \"to\": $node[\"Topic Finder\"].json[\"number\"], \"type\": \"text\", \"text\": { \"body\": $node[\"Question Generator\"].json[\"output\"] } }) }}",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.2,
-      "position": [
-        896,
-        -560
-      ],
-      "id": "a026669f-eb9d-4564-be52-b76df746ad3f",
-      "name": "HTTP Request2",
-      "credentials": {
-        "httpHeaderAuth": {
-          "id": "U4bVpErP5IJUpZNr",
-          "name": "Header Auth account"
         }
       }
     },
@@ -343,19 +206,6 @@
       ],
       "id": "0f7066b8-4d54-42bc-a238-2cb2b5128c1b",
       "name": "Topic Finder"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Get the text output from the Question Generator\nconst text = $input.first().json.output;\n\n// Use regex to extract questions that start with 1., 2., 3.\nconst matches = text.match(/\\d+\\.\\s+([\\s\\S]*?)(?=\\n\\d+\\.|$)/g);\n\n// Clean and assign to separate fields\nlet question1 = \"\";\nlet question2 = \"\";\nlet question3 = \"\";\n\nif (matches && matches.length > 0) {\n  question1 = matches[0].replace(/^\\d+\\.\\s+/, \"\").trim();\n  question2 = matches[1] ? matches[1].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n  question3 = matches[2] ? matches[2].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n}\n\n// Output as JSON for Google Sheets\nreturn [\n  {\n    json: {\n      Question1: question1,\n      Question2: question2,\n      Question3: question3\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        912,
-        -336
-      ],
-      "id": "1d8f1623-149e-493d-be7b-c9bac2fce510",
-      "name": "Code in JavaScript"
     },
     {
       "parameters": {
@@ -480,8 +330,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        1184,
-        -336
+        1152,
+        -208
       ],
       "id": "b511e314-4f00-4a6a-9dba-a631fc10ad84",
       "name": "Update row in sheet",
@@ -491,6 +341,156 @@
           "name": "Google Sheets account"
         }
       }
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "AIzaSyD_UDX2bXx6jLodyFAdTNJS9mTd_9hDeNM"
+            },
+            {
+              "name": "cx",
+              "value": "d7b2b226b4a4f4409"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json.TOPIC }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        64,
+        -368
+      ],
+      "id": "7b9c067d-52ad-415e-97b7-5f7b2a99af56",
+      "name": "Custom Google Engine"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Detect where the data is stored (some webhooks put it under body)\nconst rawData = $json.body ? $json.body : $json;\n\n// WhatsApp webhook structure\nconst entry = rawData.entry?.[0];\nconst change = entry?.changes?.[0];\nconst value = change?.value || {};\nconst contact = value.contacts?.[0];\nconst message = value.messages?.[0];\n\nconst number = contact?.wa_id || message?.from || \"Unknown\";\n\n// Ensure message text is a string\nconst text = \"Hi Buddy👋\\nI'm your CodeBuddyAI\\nSpecify your topic for today's questions in this format <topic: something>\"\n\n// Output clean JSON\nreturn {\n  number,\n  message: text,\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        -608
+      ],
+      "id": "73b3037f-00d9-435c-b77f-3353eed4d1b2",
+      "name": "Greetings"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ {\n  \"messaging_product\": \"whatsapp\",\n  \"to\": $json.number,\n  \"type\": \"text\",\n  \"text\": {\n    \"body\": $json.message\n  }\n} }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -144,
+        -608
+      ],
+      "id": "560223ad-2194-4757-bb3a-461647cba179",
+      "name": "Greetings Sender",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "U4bVpErP5IJUpZNr",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Take top 3 links/snippets for the AI agent\nconst items = $json.items?.slice(0, 3) || [];\n\nlet combinedText = \"Here are some useful pages about the topic:\\n\\n\";\n\nfor (const item of items) {\n  combinedText += `• ${item.title}\\n${item.link}\\n${item.snippet}\\n\\n`;\n}\n\n// Pass text to AI agent\nreturn {\n  topic: $json.q || \"Unknown topic\",\n  content: combinedText\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        -368
+      ],
+      "id": "6ef1dfa9-fa97-473b-b369-a2c603ac45ac",
+      "name": "Formatter Of Search Engine"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v22.0/866525093207216/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer EAAThkztFCpUBP91npSvM99yQ98v4z0ZCah8Caxr6qyHt6A0MdBmOshZCC4VWX42wd1AOqYIL0XfaHuGrVYQPyfw2MtkZAxF8FhZAaKrcBSyvSsr0s7KfFZBZCKVvOrxiwMR8Q6WTZA1btIsL6cRPpSLBHMQuxMhOyBEGHjLoiGmtydAZC6daZAEb0YDPb0LgrPLqddex4fkwABSZBUXvRcDwLh4ZCSAlbxYEX3kK1ZBOI5XoZBaZBrS5OGmfXuMZAvUCSb90SGQcm6kOMD5qGPTywZCLfVgv"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \"messaging_product\": \"whatsapp\", \"to\": $node[\"Topic Finder\"].json[\"number\"], \"type\": \"text\", \"text\": { \"body\": $node[\"Question Generator\"].json[\"output\"] } }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        912,
+        -560
+      ],
+      "id": "a026669f-eb9d-4564-be52-b76df746ad3f",
+      "name": "Question Sender",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "U4bVpErP5IJUpZNr",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the text output from the Question Generator\nconst text = $input.first().json.output;\n\n// Use regex to extract questions that start with 1., 2., 3.\nconst matches = text.match(/\\d+\\.\\s+([\\s\\S]*?)(?=\\n\\d+\\.|$)/g);\n\n// Clean and assign to separate fields\nlet question1 = \"\";\nlet question2 = \"\";\nlet question3 = \"\";\n\nif (matches && matches.length > 0) {\n  question1 = matches[0].replace(/^\\d+\\.\\s+/, \"\").trim();\n  question2 = matches[1] ? matches[1].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n  question3 = matches[2] ? matches[2].replace(/^\\d+\\.\\s+/, \"\").trim() : \"\";\n}\n\n// Output as JSON for Google Sheets\nreturn [\n  {\n    json: {\n      Question1: question1,\n      Question2: question2,\n      Question3: question3\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        -224
+      ],
+      "id": "1d8f1623-149e-493d-be7b-c9bac2fce510",
+      "name": "Question Separater"
     }
   ],
   "pinData": {},
@@ -506,16 +506,11 @@
         ]
       ]
     },
-    "HTTP Request": {
-      "main": [
-        []
-      ]
-    },
     "If": {
       "main": [
         [
           {
-            "node": "Code in JavaScript1",
+            "node": "Greetings",
             "type": "main",
             "index": 0
           }
@@ -529,44 +524,11 @@
         ]
       ]
     },
-    "Code in JavaScript1": {
-      "main": [
-        [
-          {
-            "node": "HTTP Request",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Append row in sheet": {
       "main": [
         [
           {
-            "node": "HTTP Request1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "HTTP Request1": {
-      "main": [
-        [
-          {
-            "node": "Code in JavaScript2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Code in JavaScript2": {
-      "main": [
-        [
-          {
-            "node": "Question Generator",
+            "node": "Custom Google Engine",
             "type": "main",
             "index": 0
           }
@@ -588,12 +550,12 @@
       "main": [
         [
           {
-            "node": "HTTP Request2",
+            "node": "Question Sender",
             "type": "main",
             "index": 0
           },
           {
-            "node": "Code in JavaScript",
+            "node": "Question Separater",
             "type": "main",
             "index": 0
           }
@@ -611,7 +573,45 @@
         ]
       ]
     },
-    "Code in JavaScript": {
+    "Custom Google Engine": {
+      "main": [
+        [
+          {
+            "node": "Formatter Of Search Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Greetings": {
+      "main": [
+        [
+          {
+            "node": "Greetings Sender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Greetings Sender": {
+      "main": [
+        []
+      ]
+    },
+    "Formatter Of Search Engine": {
+      "main": [
+        [
+          {
+            "node": "Question Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Question Separater": {
       "main": [
         [
           {
@@ -627,7 +627,7 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "a66142f4-7eee-4dff-97a6-ab584f0671b4",
+  "versionId": "54dfcc2a-8fb9-4ae4-a2e5-50c6b39ccae8",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "2750bd095c76ca707ab18038609b2c474deff2baec9d97e4fefe2262cacc91d2"
